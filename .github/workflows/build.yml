@@ -26,11 +26,7 @@ jobs:
       run: npm run lint
     - name: Prettier check
       run: npm run prettier-check
-    - name: Build prod
-      if: github.base_ref == 'master'
-      run: npm run build -- --prod
     - name: Build dev
-      if: github.base_ref == 'develop'
       run: npm run build
     - name: Test
       run: npm run test-single-run
