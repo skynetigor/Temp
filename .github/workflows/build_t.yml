@@ -47,7 +47,7 @@ jobs:
         run: gcloud info
       - name: Deploy
         run: |-
-          gsutil -m rsync -R output gs://$GCS_BUCKET_MASTER
+          gsutil -m rsync -R dist gs://$GCS_BUCKET_MASTER
   # deploy:
   #   # The type of runner that the job will run on
   #   runs-on: ubuntu-latest
