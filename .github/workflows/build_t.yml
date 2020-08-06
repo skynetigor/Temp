@@ -20,10 +20,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.8
-      - name: Clean cache
-        run: npm cache clean --force
-      - name: Update npm
-        run: npm update npm -g
       - name: Install dependencies
         run: npm install
       - name: Lint
