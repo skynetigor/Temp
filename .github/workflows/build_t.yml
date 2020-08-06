@@ -22,15 +22,29 @@ jobs:
           node-version: 12.8
       - name: Install dependencies
         run: npm install
-      - name: Lint
-        run: npm run lint
-      - name: Prettier check
-        run: npm run prettier-check
+      # - name: Lint
+      #   run: npm run lint
+      # - name: Prettier check
+      #   run: npm run prettier-check
       - name: Build dev
         run: npm run build -- --output-path dist
-      - name: Test
-        run: npm run test-single-run
+      # - name: Test
+      #   run: npm run test-single-run
       - name: "Upload artifact #2"
         uses: actions/upload-artifact@v2
         with:
+          name: app
           path: dist
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Download math result for job 2
+        uses: actions/download-artifact@v2
+        with:
+          name: app
+      - name: Print the final result
+        shell: bash
+        run: echo ${{hashFiles('index.html')}}
