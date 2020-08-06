@@ -27,7 +27,7 @@ jobs:
     - name: Prettier check
       run: npm run prettier-check
     - name: Build dev
-      run: npm run build
+      run: npm run build -op dist
     - name: Test
       run: npm run test-single-run
     - name: 'Upload artifact #2'
