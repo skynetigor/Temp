@@ -31,6 +31,6 @@ jobs:
     - name: Test
       run: npm run test-single-run
     - name: 'Upload artifact #2'
-      uses: ./
+      uses: actions/upload-artifact@v2
       with:
         path: dist 
