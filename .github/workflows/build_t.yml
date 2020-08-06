@@ -12,6 +12,8 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    env:
+      GCS_BUCKET_MASTER: ${{ secrets.GCS_BUCKET_MASTER }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -35,16 +37,24 @@ jobs:
         with:
           name: app
           path: dist
-  deploy:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Download math result for job 2
-        uses: actions/download-artifact@v2
+      - name: Setup - gcloud / gsutil
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          name: app
-      - name: Print the final result
-        shell: bash
-        run: echo ${{hashFiles('index.html')}}
+          service_account_key: ${{ secrets.GCS_SA_KEY_MASTER }}
+          project_id: ${{ secrets.GCS_PROJECT_MASTER }}
+          export_default_credentials: true
+      - name: Deploy
+        run: |-
+          gsutil -m rsync -R output gs://$GCS_BUCKET_MASTER
+  # deploy:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     - name: Download math result for job 2
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: app
+  #     - name: Print the final result
+  #       shell: bash
+  #       run: echo ${{hashFiles('index.html')}}
