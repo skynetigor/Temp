@@ -31,7 +31,7 @@ jobs:
 
       - name: Gos
         # if: github.env.GITHUB_EVENT_NAME == env.HEAD_SOME
-        run: exit 1
+        run: echo 1
 
       - name: Go
         if: github.base_ref == env.HEAD_SOME
