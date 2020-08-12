@@ -25,6 +25,10 @@ jobs:
         with:
           node-version: 12.8
 
+      - name: Gos
+        # if: github.env.GITHUB_EVENT_NAME == env.HEAD_SOME
+        run: echo ${{ github.env.GITHUB_EVENT_NAME }}
+
       - name: Go
         if: github.base_ref == env.HEAD_SOME
         run: echo
