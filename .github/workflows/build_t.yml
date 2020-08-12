@@ -15,7 +15,7 @@ jobs:
     env:
       APP_DIRECTORY: app
       GCS_BUCKET_MASTER: ${{ secrets.GCS_BUCKET_MASTER }}
-      HEAD_SOME: refs/heads/master
+      HEAD_SOME: refs/heads/develop
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
