@@ -33,7 +33,8 @@ jobs:
         if: github.base_ref == env.HEAD_SOME
         run: echo
   deploy:
-    if: github.event_name == 'pull_request'
+    if: success()
+    # github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
