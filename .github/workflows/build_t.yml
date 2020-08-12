@@ -32,6 +32,15 @@ jobs:
       - name: Go
         if: github.base_ref == env.HEAD_SOME
         run: echo
+  deploy:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: HELLO
+        # if: github.env.GITHUB_EVENT_NAME == env.HEAD_SOME
+        run: echo ${{ github.event_name }}
         # run: echo "-----> ${{ github.head_ref }} | ${{ github.base_ref }} | ${{ github.ref }}""
       # - name: Install dependencies
       #   run: npm install
