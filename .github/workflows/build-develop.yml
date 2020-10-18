@@ -1,0 +1,52 @@
+name: Build/Test/Deploy develop
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the develop branch
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  Build-Develop:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      APP_DIRECTORY: app-output
+      GCS_BUCKET_DEVELOP: ${{ secrets.GCS_BUCKET_DEVELOP }}
+      GCS_PROJECT_DEVELOP: ${{ secrets.GCS_PROJECT_DEVELOP }}
+      GCS_SA_KEY_DEVELOP: ${{ secrets.GCS_SA_KEY_DEVELOP }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12.8
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.8
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Prettier check
+        run: npm run prettier-check
+
+      - name: Build
+        run: npm run build -- --output-path "$APP_DIRECTORY"
+
+      - name: Test
+        run: npm run test-single-run
+
+      - name: Setup GoogleCloud
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ env.GCS_SA_KEY_DEVELOP }}
+          project_id: ${{ env.GCS_PROJECT_DEVELOP }}
+          export_default_credentials: true
+
+      - name: Deploy
+        run: |-
+          gsutil -m rsync -R "$APP_DIRECTORY" gs://$GCS_BUCKET_DEVELOP
